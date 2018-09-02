@@ -94,12 +94,12 @@
 				<footer class="major container medium">
 					<h3>Let's go.</h3>
 					<p>LittleWeeb is cross-platform, so you can enjoy using it on any device you own, wherever/whenever. Just tap which platform you're after and you can get back to watching those Chinese cartoons.</p>
-					<ul class="actions special">
-                        <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-windows"> Windows</a> <br> v0.4.0</li>
-						<!--<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-apple"> macOS</a> <br> v0.4.0</li>-->
+					<ul class="actions special" id="releases">
+                        <!--<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-windows"> Windows</a> <br> v0.4.0</li>
+						<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-apple"> macOS</a> <br> v0.4.0</li>
 						<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-linux"> Linux</a> <br> v0.4.0</li>
                         <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-android"> Android</a> <br> v0.1</li>
-                        <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases"> Other Releases</a> <br> 32bit, etc.</li>
+                        <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases"> Other Releases</a> <br> 32bit, etc.</li>-->
 					</ul>
 				</footer>
 
@@ -116,8 +116,8 @@
 					<p>LittleWeeb is currently in active development and we'd appreciate any push requests you could make. Be it changing a spelling mistake to a new feature or even just a bug report, we'd love any testing/dev you could help us out with ;)</p>
 
 					<ul class="icons">
-						<li><a href="https://github.com/EldinZenderink/LittleWeeb" class="icon fa-github"><span class="label">Github</span></a></li>
-						<!--<li><a href="https://discordapp.com" class="icon fa-comments"><span class="label">Discord</span></a></li>-->
+						<li><a href="https://github.com/LittleWeeb" class="icon fa-github"><span class="label">Github</span></a></li>
+						<li><a href="https://discord.gg/5rCAhVQ" class="icon fa-comments"><span class="label">Discord</span></a></li>
 					</ul>
 
 					<ul class="copyright">
@@ -133,6 +133,58 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+            <script>
+            // Get release data for Desktop platforms.
+            
+                var platforms = ["mac", "linux", "win"];
 
+                $.get( "https://api.github.com/repos/littleweeb/Desktop/releases", function( data ) {
+                    // console.log(data);
+                    var latestRelease = data[0].assets[0].name;
+                    var latestTag = data[0].tag_name;
+   
+                    var latestVersion = latestTag.split('_')[0];
+   
+                    var latestReleases = "";
+   
+                    for(var i = 0; i < data.length; i++){
+                        var release = data[i];
+                        // console.log(release);
+                            
+                        if(release.tag_name.indexOf(latestVersion) > -1 && release.tag_name.indexOf("develop") == -1){
+                        var platform = release.tag_name.split('_')[1];
+                        var indexOfPlatform = platforms.indexOf(platform);
+          
+                        switch(indexOfPlatform){
+                        case 0:             
+                            latestReleases += "<li> <a href='" + release.assets[release.assets.length - 1].browser_download_url + "' class='icon fa-apple'> macOS</a> <br>" + latestVersion + "</li>";
+                        break;
+                            
+                        case 1:
+                            latestReleases += "<li> <a href='" + release.assets[release.assets.length - 1].browser_download_url + "' class='icon fa-linux'> Linux</a> <br>" + latestVersion + "</li>";
+                        break;
+                            
+                        case 2:
+                            latestReleases += "<li> <a href='" + release.assets[release.assets.length - 1].browser_download_url + "' class='icon fa-windows'> Windows</a> <br>" + latestVersion + "</li>";
+                        break;
+                        }          
+                       }    
+                    }
+   
+                $('#releases').prepend(latestReleases);
+              });
+              
+            // Get release data for Mobile platforms, show All Releases link as well.
+                
+                $.get( "https://api.github.com/repos/littleweeb/Android/releases", function( data ) {
+                    var latestTag = data[0].tag_name;
+                    var latestVersion = latestTag.split('_')[0];
+                    var latestDL = data[0].assets[0].browser_download_url;
+                    var mobileReleaseData = "<li> <a href='" + latestDL + "' class='icon fa-android'> Android</a> <br>" + latestVersion + "</li>";
+                    var otherReleaseData = "<li> <a href='https://github.com/LittleWeeb/Desktop'> All Releases </a> <br> Dev, pre-release, etc. </li>";
+                    
+                $('#releases').append(mobileReleaseData, otherReleaseData);
+                });
+        </script>
 	</body>
 </html>
