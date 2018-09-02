@@ -10,6 +10,11 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
 	</head>
 	<body class="is-preload">
 
@@ -95,11 +100,11 @@
 					<h3>Let's go.</h3>
 					<p>LittleWeeb is cross-platform, so you can enjoy using it on any device you own, wherever/whenever. Just tap which platform you're after and you can get back to watching those Chinese cartoons.</p>
 					<ul class="actions special">
-                        <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-windows"> Windows</a> <br> v0.4.0</li>
-						<!--<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-apple"> macOS</a> <br> v0.4.0</li>-->
-						<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-linux"> Linux</a> <br> v0.4.0</li>
-                        <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-android"> Android</a> <br> v0.1</li>
-                        <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases"> Other Releases</a> <br> 32bit, etc.</li>
+                        <li><a id="windows_url" class="icon fa-windows"> Windows</a> <br> <span id="windows_release"></span > <br>Count: <span  id="windows_count"></span ></li>
+						<li><a id="mac_url" class="icon fa-apple"> macOS</a> <br> <span  id="mac_release"></span ><br>Count: <span id="mac_count"></span ></li>
+						<li><a id="linux_url" class="icon fa-linux"> Linux</a> <br><span  id="linux_release"></span ><br>Count: <span id="linux_count"></span ></li>
+                        <li><a id="android_url" class="icon fa-android"> Android</a> <br> <span id="android_release"></span ><br>Count: <span id="android_count"></span ></li>
+                       <!-- <li><a class="icon fa-server" href="https://github.com/EldinZenderink/LittleWeeb/Server"> Server </a> <br> All Platforms.</li>-->
 					</ul>
 				</footer>
 
@@ -128,11 +133,7 @@
 			</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+		<script src="assets/js/getlatestrelease.js"></script>
 
 	</body>
 </html>
