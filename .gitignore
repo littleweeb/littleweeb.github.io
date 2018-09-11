@@ -1,0 +1,6 @@
+
+hs
+node_modules/*
+hs.cmd
+http-server
+http-server.cmd
