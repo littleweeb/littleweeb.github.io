@@ -94,13 +94,23 @@
 				<footer class="major container medium">
 					<h3>Let's go.</h3>
 					<p>LittleWeeb is cross-platform, so you can enjoy using it on any device you own, wherever/whenever. Just tap which platform you're after and you can get back to watching those Chinese cartoons.</p>
-					<ul class="actions special" id="releases">
-                        <!--<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-windows"> Windows</a> <br> v0.4.0</li>
-						<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-apple"> macOS</a> <br> v0.4.0</li>
-						<li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-linux"> Linux</a> <br> v0.4.0</li>
-                        <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases" class="icon fa-android"> Android</a> <br> v0.1</li>
-                        <li><a href="https://github.com/EldinZenderink/LittleWeeb/releases"> Other Releases</a> <br> 32bit, etc.</li>-->
+					
+					<h5>Releases</h4>
+					<ul class="actions special" id="release_releases">
 					</ul>
+
+					<p>For the daredevils: </p>
+					<h6>Develop</h6>
+					<ul class="actions special" id="develop_releases">
+					</ul>
+
+					<p>
+					<h6>Github</h6>
+					<ul class="actions special" id="develop_releases">
+                        <li><a href="https://github.com/littleweeb/Desktop/releases" class="icon fa-desktop"> Desktop </a> </li>
+                        <li><a href="https://github.com/littleweeb/Android/releases" class="icon fa-mobile"> Android</a> </li>
+					</ul>
+
 				</footer>
 
 			</div>
@@ -140,7 +150,6 @@
 
                 $.get( "https://api.github.com/repos/littleweeb/Desktop/releases", function( data ) {
                     // console.log(data);
-                    var latestRelease = data[0].assets[0].name;
                     var latestTag = data[0].tag_name;
    
                     var latestVersion = latestTag.split('_')[0];
@@ -151,40 +160,108 @@
                         var release = data[i];
                         // console.log(release);
                             
-                        if(release.tag_name.indexOf(latestVersion) > -1 && release.tag_name.indexOf("develop") == -1){
-                        var platform = release.tag_name.split('_')[1];
-                        var indexOfPlatform = platforms.indexOf(platform);
-          
-                        switch(indexOfPlatform){
-                        case 0:             
-                            latestReleases += "<li> <a href='" + release.assets[release.assets.length - 1].browser_download_url + "' class='icon fa-apple'> macOS</a> <br>" + latestVersion + "</li>";
-                        break;
-                            
-                        case 1:
-                            latestReleases += "<li> <a href='" + release.assets[release.assets.length - 1].browser_download_url + "' class='icon fa-linux'> Linux</a> <br>" + latestVersion + "</li>";
-                        break;
-                            
-                        case 2:
-                            latestReleases += "<li> <a href='" + release.assets[release.assets.length - 1].browser_download_url + "' class='icon fa-windows'> Windows</a> <br>" + latestVersion + "</li>";
-                        break;
-                        }          
-                       }    
+                        if(release.tag_name.indexOf(latestVersion) > -1 && release.target_commitish == "master"){
+							var platform = release.tag_name.split('_')[1];
+							console.log(release);
+							
+							var asset = release.assets[release.assets.length - 1];
+							var build = asset.name.split('.')[release.name.split('.').length ];
+							var indexOfPlatform = platforms.indexOf(platform);
+							
+							switch(indexOfPlatform){
+								case 0:             
+								    $('#release_releases').append("<li> <a href='" + asset.browser_download_url + "' class='icon fa-apple'> MacOS </a> <br>" + latestVersion + "<br>Version: " + latestVersion + " <br> Build: " + build + " <br > Downloads: " + asset.download_count + "x</li>");
+								break;
+									
+								case 1:
+									$('#release_releases').append("<li> <a href='" + asset.browser_download_url + "' class='icon fa-linux'> Linux </a> <br>" + latestVersion + "<br>Version: " + latestVersion + " <br> Build: " + build + " <br > Downloads: " + asset.download_count + "x</li>");
+								break;
+									
+								case 2:
+									$('#release_releases').append("<li> <a href='" + asset.browser_download_url + "' class='icon fa-windows'> Windows</a> <br>" + latestVersion + "<br>Version: " + latestVersion + " <br> Build: " + build + " <br > Downloads: " + asset.download_count + "x</li>");
+								break;
+                        	}          
+                       	}    
+
+                		$('#release_releases').prepend(latestReleases);
+						latestReleases = "";
+						if(release.tag_name.indexOf(latestVersion) > -1 && release.target_commitish == "develop"){
+							var platform = release.tag_name.split('_')[1];
+							
+							var asset = release.assets[release.assets.length - 1];
+							var build = asset.name.split('.')[release.name.split('.').length ];
+							var indexOfPlatform = platforms.indexOf(platform);
+							
+							switch(indexOfPlatform){
+								case 0:             
+									$('#develop_releases').append("<li> <a href='" + asset.browser_download_url + "' class='icon fa-apple'> MacOS </a> <br>" + latestVersion + "<br>Version: " + latestVersion + " <br> Build: " + build + " <br > Downloads: " + asset.download_count + "x</li>");
+								break;
+									
+								case 1:
+									$('#develop_releases').append("<li> <a href='" + asset.browser_download_url + "' class='icon fa-linux'> Linux </a> <br>" + latestVersion + "<br>Version: " + latestVersion + " <br> Build: " + build + " <br > Downloads: " + asset.download_count + "x</li>");
+								break;
+									
+								case 2:
+									$('#develop_releases').append("<li> <a href='" + asset.browser_download_url + "' class='icon fa-windows'> Windows</a> <br>" + latestVersion + "<br>Version: " + latestVersion + " <br> Build: " + build + " <br > Downloads: " + asset.download_count + "x</li>");
+								break;
+                        	}          
+                       	}    
+
+						   
+						$('#develop_releases').prepend(latestReleases);
                     }
    
-                $('#releases').prepend(latestReleases);
+              });
+
+			  $.get( "https://api.github.com/repos/littleweeb/Android/releases", function( data ) {
+                    // console.log(data);
+                    var latestTag = data[0].tag_name;
+   
+                    var latestVersion = latestTag.split('_')[0];
+   
+                    var latestReleases = "";
+   
+                    for(var i = 0; i < data.length; i++){
+                        var release = data[i];
+                         console.log(release.target_commitish );
+                            
+                        if(release.tag_name.indexOf(latestVersion) > -1 && release.target_commitish == "master"){
+							var platform = release.tag_name.split('_')[1];
+							
+							var asset = release.assets[release.assets.length - 1];
+							var build = asset.name.split('.')[release.name.split('.').length ];
+							var indexOfPlatform = platforms.indexOf(platform);
+							
+							
+							$('#release_releases').append("<li> <a href='" + asset.browser_download_url + "' class='icon fa-android'> Android</a> <br>" + latestVersion + "<br>Version: " + latestVersion + " <br> Build: " + build + " <br > Downloads: " + asset.download_count + "x</li>");
+							break;
+                    
+                       	}    
+                    }
+
+					
+					latestReleases = "";
+                    for(var i = 0; i < data.length; i++){
+                        var release = data[i];
+                        // console.log(release);
+                            
+                        if(release.tag_name.indexOf(latestVersion) > -1 && release.target_commitish == "develop"){
+							var platform = release.tag_name.split('_')[1];
+							
+							var asset = release.assets[release.assets.length - 1];
+							var build = asset.name.split('.')[release.name.split('.').length ];
+							var indexOfPlatform = platforms.indexOf(platform);
+							
+							
+							$('#develop_releases').append("<li> <a href='" + asset.browser_download_url + "' class='icon fa-android'> Android</a> <br>" + latestVersion + "<br>Version: " + latestVersion + " <br> Build: " + build + " <br > Downloads: " + asset.download_count + "x</li>");
+                    		break;
+                       	}    
+                    }
               });
               
             // Get release data for Mobile platforms, show All Releases link as well.
                 
-                $.get( "https://api.github.com/repos/littleweeb/Android/releases", function( data ) {
-                    var latestTag = data[0].tag_name;
-                    var latestVersion = latestTag.split('_')[0];
-                    var latestDL = data[0].assets[0].browser_download_url;
-                    var mobileReleaseData = "<li> <a href='" + latestDL + "' class='icon fa-android'> Android</a> <br>" + latestVersion + "</li>";
-                    var otherReleaseData = "<li> <a href='https://github.com/LittleWeeb/Desktop'> All Releases </a> <br> Dev, pre-release, etc. </li>";
-                    
-                $('#releases').append(mobileReleaseData, otherReleaseData);
-                });
+              
         </script>
 	</body>
 </html>
